@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'dockerhubusername/nodejs-jenkins'
         TAG = 'latest'
-        REGISTRY_CREDENTIALS = 'dockerhub-credentials-id'
+        REGISTRY_CREDENTIALS = 'dockerhub-credentials-id'  // Pastikan ini adalah ID kredensial yang benar
     }
 
     stages {
@@ -17,6 +17,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    // Pastikan Docker build berhasil
                     docker.build("${DOCKER_IMAGE}:${TAG}")
                 }
             }
@@ -25,8 +26,9 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry('', REGISTRY_CREDENTIALS) {
-                        docker.image("${DOCKER_IMAGE}:${TAG}").push()
+                    // Pastikan kredensial Docker benar
+                    docker.withRegistry('https://index.docker.io/v1/', REGISTRY_CREDENTIALS) {
+                        docker.image("${DOCKER_IMAGE}:${TAG}").push()  // Menggunakan 'docker.image' untuk push image
                     }
                 }
             }
